@@ -3,14 +3,12 @@ package com.widehouse.calendar.event.service;
 import com.widehouse.calendar.event.Event;
 import com.widehouse.calendar.event.EventRepository;
 
-import java.time.Instant;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.YearMonth;
-import java.time.ZoneId;
 import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
-import java.time.temporal.TemporalAdjuster;
 import java.time.temporal.TemporalAdjusters;
 import java.util.List;
 
@@ -27,8 +25,8 @@ public class EventService {
      * @return Event 목록. 없으면 empty list
      */
     public List<Event> findByDate(LocalDate localDate, ZoneOffset zoneOffset) {
-        Instant startAtBegin =  ZonedDateTime.of(localDate, LocalTime.MIDNIGHT, zoneOffset).toInstant();
-        Instant startAtEnd =  ZonedDateTime.of(localDate, LocalTime.MAX, zoneOffset).toInstant();
+        ZonedDateTime startAtBegin =  ZonedDateTime.of(localDate, LocalTime.MIDNIGHT, zoneOffset);
+        ZonedDateTime startAtEnd =  ZonedDateTime.of(localDate, LocalTime.MAX, zoneOffset);
 
         return eventRepository.findByStartAtBetween(startAtBegin, startAtEnd);
     }
@@ -45,9 +43,20 @@ public class EventService {
         LocalDate firstDay = LocalDate.of(year, month, 1);
         LocalDate lastDay = firstDay.with(TemporalAdjusters.lastDayOfMonth());
 
-        Instant startAtBegin =  ZonedDateTime.of(firstDay, LocalTime.MIDNIGHT, zoneOffset).toInstant();
-        Instant startAtEnd =  ZonedDateTime.of(lastDay, LocalTime.MAX, zoneOffset).toInstant();
+        ZonedDateTime startAtBegin =  ZonedDateTime.of(firstDay, LocalTime.MIDNIGHT, zoneOffset);
+        ZonedDateTime startAtEnd =  ZonedDateTime.of(lastDay, LocalTime.MAX, zoneOffset);
 
         return eventRepository.findByStartAtBetween(startAtBegin, startAtEnd);
+    }
+
+    public Event createEvent(String name, String description, LocalDateTime startAt, LocalDateTime endAt,
+                             ZoneOffset zoneOffset) {
+        Event event = Event.builder()
+                .name(name).description(description)
+                .startAt(ZonedDateTime.of(startAt, zoneOffset))
+                .endAt(ZonedDateTime.of(endAt, zoneOffset))
+                .build();
+
+        return eventRepository.save(event);
     }
 }

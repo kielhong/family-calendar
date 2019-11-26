@@ -1,21 +1,13 @@
-package com.widehouse.calendar.event;
-
-import java.time.Instant;
-import java.time.OffsetDateTime;
-import java.time.ZonedDateTime;
-import java.util.prefs.Preferences;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+package com.widehouse.calendar.event.data;
 
 import com.widehouse.calendar.user.User;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
-import lombok.NonNull;
 import org.springframework.util.Assert;
+
+import javax.persistence.*;
+import java.time.ZonedDateTime;
 
 @Getter
 @Builder
@@ -25,10 +17,12 @@ public class Event {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NonNull
+    @ManyToOne
     private final User creator;
+
     @Column(length = 200)
     private String name;
+
     @Column(length = 2000)
     private String description;
 

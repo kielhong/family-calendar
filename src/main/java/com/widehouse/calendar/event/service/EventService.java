@@ -1,7 +1,7 @@
 package com.widehouse.calendar.event.service;
 
-import com.widehouse.calendar.event.Event;
-import com.widehouse.calendar.event.EventRepository;
+import com.widehouse.calendar.event.data.Event;
+import com.widehouse.calendar.event.data.EventRepository;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -12,6 +12,7 @@ import java.time.ZonedDateTime;
 import java.time.temporal.TemporalAdjusters;
 import java.util.List;
 
+import com.widehouse.calendar.user.User;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
@@ -49,9 +50,10 @@ public class EventService {
         return eventRepository.findByStartAtBetween(startAtBegin, startAtEnd);
     }
 
-    public Event createEvent(String name, String description, LocalDateTime startAt, LocalDateTime endAt,
+    public Event createEvent(User user, String name, String description, LocalDateTime startAt, LocalDateTime endAt,
                              ZoneOffset zoneOffset) {
         Event event = Event.builder()
+                .creator(user)
                 .name(name).description(description)
                 .startAt(ZonedDateTime.of(startAt, zoneOffset))
                 .endAt(ZonedDateTime.of(endAt, zoneOffset))

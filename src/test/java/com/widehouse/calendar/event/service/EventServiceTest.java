@@ -5,8 +5,8 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
 
-import com.widehouse.calendar.event.Event;
-import com.widehouse.calendar.event.EventRepository;
+import com.widehouse.calendar.event.data.Event;
+import com.widehouse.calendar.event.data.EventRepository;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -16,6 +16,7 @@ import java.time.ZonedDateTime;
 import java.util.Arrays;
 import java.util.List;
 
+import com.widehouse.calendar.user.User;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -28,20 +29,26 @@ class EventServiceTest {
     @Mock
     private EventRepository eventRepository;
 
+    private User user;
+
     @BeforeEach
     void setUp() {
         service = new EventService(eventRepository);
+
+        user = User.builder().name("user").build();
     }
 
     @Test
     void findByDay_GivenLocalDate_ThenListWithinLocalDate() {
         // given
         Event event1 = Event.builder()
+                .creator(user)
                 .name("event1").description("event1")
                 .startAt(ZonedDateTime.of(2019, 11, 1, 9, 0, 0, 0, ZoneOffset.UTC))
                 .endAt(ZonedDateTime.of(2019, 11, 1, 10, 0, 0, 0, ZoneOffset.UTC))
                 .build();
         Event event2 = Event.builder()
+                .creator(user)
                 .name("event2").description("event2")
                 .startAt(ZonedDateTime.of(2019, 11, 1, 13, 0, 0, 0, ZoneOffset.UTC))
                 .endAt(ZonedDateTime.of(2019, 11, 1, 14, 0, 0, 0, ZoneOffset.UTC))
@@ -58,16 +65,19 @@ class EventServiceTest {
     @Test
     void findByMonth_GivenYearMonth_ThenListWithinLocalMonth() {
         Event event1 = Event.builder()
+                .creator(user)
                 .name("event1").description("event1")
                 .startAt(ZonedDateTime.of(2019, 11, 1, 9, 0, 0, 0, ZoneOffset.UTC))
                 .endAt(ZonedDateTime.of(2019, 11, 1, 10, 0, 0, 0, ZoneOffset.UTC))
                 .build();
         Event event2 = Event.builder()
+                .creator(user)
                 .name("event2").description("event2")
                 .startAt(ZonedDateTime.of(2019, 11, 15, 13, 0, 0, 0, ZoneOffset.UTC))
                 .endAt(ZonedDateTime.of(2019, 11, 15, 14, 0, 0, 0, ZoneOffset.UTC))
                 .build();
         Event event3 = Event.builder()
+                .creator(user)
                 .name("event3").description("event3")
                 .startAt(ZonedDateTime.of(2019, 11, 30, 13, 0, 0, 0, ZoneOffset.UTC))
                 .endAt(ZonedDateTime.of(2019, 11, 30, 14, 0, 0, 0, ZoneOffset.UTC))
@@ -85,6 +95,7 @@ class EventServiceTest {
     void createEvent_ThenReturnEvent() {
         // given
         Event event = Event.builder()
+                .creator(user)
                 .name("event").description("desc")
                 .startAt(ZonedDateTime.of(2019, 11, 5, 13, 0, 0, 0, ZoneOffset.UTC))
                 .endAt(ZonedDateTime.of(2019, 11, 5, 14, 0, 0, 0, ZoneOffset.UTC))
@@ -92,7 +103,7 @@ class EventServiceTest {
         given(eventRepository.save(any(Event.class)))
                 .willReturn(event);
         // when
-        Event result = service.createEvent("name", "desc", LocalDateTime.of(2019, 11, 5, 13, 0, 0),
+        Event result = service.createEvent(user, "name", "desc", LocalDateTime.of(2019, 11, 5, 13, 0, 0),
                 LocalDateTime.of(2019, 11, 5, 14, 0, 0), ZoneOffset.UTC);
         // then
         then(result).isEqualTo(event);

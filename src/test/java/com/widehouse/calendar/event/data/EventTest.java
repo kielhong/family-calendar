@@ -1,14 +1,14 @@
-package com.widehouse.calendar.event;
-
-import static org.assertj.core.api.BDDAssertions.then;
-import static org.assertj.core.api.BDDAssertions.thenThrownBy;
-
-import java.time.ZoneOffset;
-import java.time.ZonedDateTime;
+package com.widehouse.calendar.event.data;
 
 import com.widehouse.calendar.user.User;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
+import java.time.ZoneOffset;
+import java.time.ZonedDateTime;
+
+import static org.assertj.core.api.BDDAssertions.then;
+import static org.assertj.core.api.BDDAssertions.thenThrownBy;
 
 class EventTest {
     private User user;

@@ -2,6 +2,7 @@ package com.widehouse.calendar.event.service;
 
 import static org.assertj.core.api.BDDAssertions.then;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
 
@@ -39,7 +40,7 @@ class EventServiceTest {
     }
 
     @Test
-    void findByDay_GivenLocalDate_ThenListWithinLocalDate() {
+    void findByDay_GivenUserAndLocalDate_ThenListWithinLocalDate() {
         // given
         Event event1 = Event.builder()
                 .creator(user)
@@ -53,17 +54,17 @@ class EventServiceTest {
                 .startAt(ZonedDateTime.of(2019, 11, 1, 13, 0, 0, 0, ZoneOffset.UTC))
                 .endAt(ZonedDateTime.of(2019, 11, 1, 14, 0, 0, 0, ZoneOffset.UTC))
                 .build();
-        given(eventRepository.findByStartAtBetween(any(ZonedDateTime.class), any(ZonedDateTime.class)))
+        given(eventRepository.findByCreatorAndStartAtBetween(eq(user), any(ZonedDateTime.class), any(ZonedDateTime.class)))
                 .willReturn(Arrays.asList(event1, event2));
         // when
-        List<Event> results = service.findByDate(LocalDate.of(2019, 11, 1), ZoneOffset.UTC);
+        List<Event> results = service.findByDate(user, LocalDate.of(2019, 11, 1), ZoneOffset.UTC);
         // then
         then(results)
                 .containsOnly(event1, event2);
     }
 
     @Test
-    void findByMonth_GivenYearMonth_ThenListWithinLocalMonth() {
+    void findByMonth_GivenUserAndYearMonth_ThenListWithinLocalMonth() {
         Event event1 = Event.builder()
                 .creator(user)
                 .name("event1").description("event1")
@@ -82,10 +83,11 @@ class EventServiceTest {
                 .startAt(ZonedDateTime.of(2019, 11, 30, 13, 0, 0, 0, ZoneOffset.UTC))
                 .endAt(ZonedDateTime.of(2019, 11, 30, 14, 0, 0, 0, ZoneOffset.UTC))
                 .build();
-        given(eventRepository.findByStartAtBetween(any(ZonedDateTime.class), any(ZonedDateTime.class)))
+        given(eventRepository.findByCreatorAndStartAtBetween(eq(user),
+                any(ZonedDateTime.class), any(ZonedDateTime.class)))
                 .willReturn(Arrays.asList(event1, event2, event3));
         // when
-        List<Event> events = service.findByMonth(YearMonth.of(2019, 11), ZoneOffset.UTC);
+        List<Event> events = service.findByMonth(user, YearMonth.of(2019, 11), ZoneOffset.UTC);
         // then
         then(events)
                 .containsOnly(event1, event2, event3);

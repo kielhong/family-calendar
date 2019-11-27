@@ -1,13 +1,19 @@
 package com.widehouse.calendar.event.data;
 
 import com.widehouse.calendar.user.User;
+
+import java.time.ZonedDateTime;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import org.springframework.util.Assert;
-
-import javax.persistence.*;
-import java.time.ZonedDateTime;
 
 @Getter
 @Builder

@@ -2,6 +2,7 @@ package com.widehouse.calendar.event.service;
 
 import com.widehouse.calendar.event.data.Event;
 import com.widehouse.calendar.event.data.EventRepository;
+import com.widehouse.calendar.user.User;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -12,9 +13,10 @@ import java.time.ZonedDateTime;
 import java.time.temporal.TemporalAdjusters;
 import java.util.List;
 
-import com.widehouse.calendar.user.User;
 import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
 
+@Service
 @RequiredArgsConstructor
 public class EventService {
     private final EventRepository eventRepository;

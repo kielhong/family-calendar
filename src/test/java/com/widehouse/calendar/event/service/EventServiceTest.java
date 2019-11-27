@@ -8,6 +8,7 @@ import static org.mockito.Mockito.verify;
 
 import com.widehouse.calendar.event.data.Event;
 import com.widehouse.calendar.event.data.EventRepository;
+import com.widehouse.calendar.user.User;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -17,7 +18,6 @@ import java.time.ZonedDateTime;
 import java.util.Arrays;
 import java.util.List;
 
-import com.widehouse.calendar.user.User;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -54,7 +54,8 @@ class EventServiceTest {
                 .startAt(ZonedDateTime.of(2019, 11, 1, 13, 0, 0, 0, ZoneOffset.UTC))
                 .endAt(ZonedDateTime.of(2019, 11, 1, 14, 0, 0, 0, ZoneOffset.UTC))
                 .build();
-        given(eventRepository.findByCreatorAndStartAtBetween(eq(user), any(ZonedDateTime.class), any(ZonedDateTime.class)))
+        given(eventRepository.findByCreatorAndStartAtBetween(eq(user), any(ZonedDateTime.class),
+                any(ZonedDateTime.class)))
                 .willReturn(Arrays.asList(event1, event2));
         // when
         List<Event> results = service.findByDate(user, LocalDate.of(2019, 11, 1), ZoneOffset.UTC);

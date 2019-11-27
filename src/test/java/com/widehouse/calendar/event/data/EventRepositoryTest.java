@@ -1,19 +1,19 @@
 package com.widehouse.calendar.event.data;
 
+import static java.time.ZoneOffset.UTC;
+import static org.assertj.core.api.BDDAssertions.then;
+
 import com.widehouse.calendar.user.User;
+
+import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
+import java.util.List;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
-
-import java.time.LocalDateTime;
-import java.time.ZoneOffset;
-import java.time.ZonedDateTime;
-import java.util.List;
-
-import static java.time.ZoneOffset.UTC;
-import static org.assertj.core.api.BDDAssertions.then;
 
 @DataJpaTest
 class EventRepositoryTest {

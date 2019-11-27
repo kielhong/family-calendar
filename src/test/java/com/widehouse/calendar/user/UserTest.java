@@ -1,8 +1,8 @@
 package com.widehouse.calendar.user;
 
-import org.junit.jupiter.api.Test;
-
 import static org.assertj.core.api.BDDAssertions.then;
+
+import org.junit.jupiter.api.Test;
 
 class UserTest {
     @Test

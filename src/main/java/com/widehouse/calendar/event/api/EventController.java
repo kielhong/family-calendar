@@ -1,4 +1,4 @@
-package com.widehouse.calendar.api;
+package com.widehouse.calendar.event.api;
 
 import com.widehouse.calendar.event.data.Event;
 import com.widehouse.calendar.event.service.EventService;

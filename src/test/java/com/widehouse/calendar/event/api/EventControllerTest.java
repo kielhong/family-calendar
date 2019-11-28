@@ -1,4 +1,4 @@
-package com.widehouse.calendar.api;
+package com.widehouse.calendar.event.api;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;

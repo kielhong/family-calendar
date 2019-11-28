@@ -11,7 +11,9 @@ import java.time.YearMonth;
 import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
 import java.time.temporal.TemporalAdjusters;
+import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -32,7 +34,7 @@ public class EventService {
         ZonedDateTime startAtBegin =  ZonedDateTime.of(localDate, LocalTime.MIDNIGHT, zoneOffset);
         ZonedDateTime startAtEnd =  ZonedDateTime.of(localDate, LocalTime.MAX, zoneOffset);
 
-        return eventRepository.findByCreatorAndStartAtBetween(user, startAtBegin, startAtEnd);
+        return sortedEvents(eventRepository.findByCreatorAndStartAtBetween(user, startAtBegin, startAtEnd));
     }
 
     /**
@@ -51,7 +53,7 @@ public class EventService {
         ZonedDateTime startAtBegin =  ZonedDateTime.of(firstDay, LocalTime.MIDNIGHT, zoneOffset);
         ZonedDateTime startAtEnd =  ZonedDateTime.of(lastDay, LocalTime.MAX, zoneOffset);
 
-        return eventRepository.findByCreatorAndStartAtBetween(user, startAtBegin, startAtEnd);
+        return sortedEvents(eventRepository.findByCreatorAndStartAtBetween(user, startAtBegin, startAtEnd));
     }
 
     public Event createEvent(User user, String name, String description, LocalDateTime startAt, LocalDateTime endAt,
@@ -64,5 +66,11 @@ public class EventService {
                 .build();
 
         return eventRepository.save(event);
+    }
+
+    private List<Event> sortedEvents(List<Event> events) {
+        return events.stream()
+                .sorted(Comparator.comparing(Event::getStartAt))
+                .collect(Collectors.toList());
     }
 }

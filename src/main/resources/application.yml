@@ -17,3 +17,8 @@ spring:
   resources.chain.cache : false
   thymeleaf:
     cache: false
+security:
+  oauth2:
+    client:
+      client-id: calendar
+      client-secret: calendar-secret
